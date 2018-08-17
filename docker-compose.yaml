@@ -1,0 +1,11 @@
+version: '3'
+services:
+  proxy-server:
+    build:
+      context: .
+      dockerfile: Dockerfile-proxy-server
+    volumes:
+      - ${PWD}/nginx.conf:/nginx.conf:ro
+    ports:
+      - "443:443"
+    command: ["sh", "/auto-reload-nginx.sh"]

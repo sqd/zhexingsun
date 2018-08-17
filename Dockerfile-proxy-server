@@ -1,0 +1,5 @@
+FROM openresty/openresty:alpine
+COPY auto-reload-nginx.sh /auto-reload-nginx.sh
+COPY certs/ca.crt certs/ca.crt
+COPY certs/ca.key certs/ca.key
+RUN apk add inotify-tools
