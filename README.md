@@ -32,12 +32,9 @@ HTTPS握手在本地被劫持，`CONNECT`不会被真实地发送给代理服务
 `local_proxy.py --help`
 
 - 服务器
-`nginx.conf`中`if ngx.req.get_headers()["X-Proxy-Secret"] ~= "1234" then`更改`1234`为密码
+`password.conf`中设置密码
 
 # 高级使用
-nginx.conf配置中以下两行
-```
-# do whatever you want here to pretend not be a proxy
-return 403;
-```
-可随意更改为转发给任意伪装app(比如wordpress)
+`forbidden.conf`可随意更改为转发给任意伪装app(比如wordpress)
+
+`reload.sh`动态重新加载新配置
