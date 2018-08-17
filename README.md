@@ -1,4 +1,6 @@
 # 者行孙
+**支持Windows 10(WSL) ([安装教程](https://zhuanlan.zhihu.com/p/24537874)), Linux, Mac**
+
 假装自己是个HTTPS API的代理
 
 HTTP请求会被封装进一个HTTPS包里发给远方的代理服务器。
@@ -12,7 +14,6 @@ HTTPS握手在本地被劫持，`CONNECT`不会被真实地发送给代理服务
 # 使用
 - 客户机
 
-0. 配置服务器地址和密码
 1. `git clone https://github.com/sqd/zhexingsun.git && cd zhexingsun`
 2. `setup_local_proxy.sh`
 3. `(./local_proxy.py -s your-server.com -x yourpassword --self-signed &) && disown` (若使用受信任的证书，请忽略`--self-signed`)
