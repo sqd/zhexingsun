@@ -1,5 +1,4 @@
-# 者行孙
-**支持Windows 10(WSL) ([安装教程](https://zhuanlan.zhihu.com/p/24537874)), Linux, Mac**
+**客户端支持Windows 10(WSL) ([安装教程](https://zhuanlan.zhihu.com/p/24537874)), Linux, Mac**
 
 假装自己是个HTTPS API的代理
 
@@ -20,16 +19,16 @@ HTTPS握手在本地被劫持，`CONNECT`不会被真实地发送给代理服务
 
 1. `git clone https://github.com/sqd/zhexingsun.git && cd zhexingsun`
 2. `setup_local_proxy.sh`
-3. `(./local_proxy.py -s your-server.com -x yourpassword --self-signed &) && disown` (若使用受信任的证书，请忽略`--self-signed`)
+3. `(./local_proxy.py -s your-server.com -x yourpassword -p 8080 --self-signed &) && disown` (若使用受信任的证书，请忽略`--self-signed`)
 4. 浏览器将HTTP和SSL/TSL代理**都**设置为`127.0.0.1:8080`
 5. 访问 [http://install_ca/](http://install_ca/) 添加本地根证书
 6. 科学上网
 
 - 服务器
-0. 配置密码
 1. `git clone https://github.com/sqd/zhexingsun.git && cd zhexingsun`
-2. `mkdir -p certs && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout certs/ca.key -out certs/ca.crt` (实际使用请自备[证书](https://letsencrypt.org/))
-3. `docker-compose up -d && disown` (或者自行安装[openresty](https://openresty.org/en/)并参照设置nginx.conf和证书)
+2. 设置密码
+3. `mkdir -p certs && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout certs/ca.key -out certs/ca.crt` (实际使用请自备[证书](https://letsencrypt.org/))
+4. `docker-compose up -d && disown` (或者自行安装[openresty](https://openresty.org/en/)并参照设置nginx.conf和证书)
 
 # 配置
 - 客户机
