@@ -7,9 +7,13 @@ HTTP请求会被封装进一个HTTPS包里发给远方的代理服务器。
 
 这是一次真实的客户机和代理服务器之间的HTTPS通讯，和HTTPS API调用没有区别。
 
-HTTPS握手在本地被劫持，`CONNECT`不会被真实地发送给代理服务器。
+HTTPS握手在本地被劫持，`CONNECT`不会被真实地发送给代理服务器。也不会发生双层的握手。（即不会出现简单地把SOCKS类代理封装在SSL中时，能看到明显的`(SOCKS握手)－SSL握手－SSL payload`的特征情况）。
 
-有意不支持HTTP长连接和相关技术（也是因为API服务器没有理由使用这个功能）
+有意不支持HTTP长连接和相关技术（也是因为API服务器没有理由使用这个功能）。
+
+代理服务器收到请求时，先检查`X-Proxy-Secret` header是否存在并匹配，否则伪装成正常网站（例如wordpress）。
+
+**安全考虑：极度建议自己修改`forbidden.conf`，放上例如Jekyll, Wordpress, Laravel, 家里狗的照片之类的正常内容**
 
 # 使用
 - 客户机
