@@ -6,8 +6,11 @@ services:
       dockerfile: Dockerfile-proxy-server
     volumes:
       - ${PWD}/nginx.conf:/nginx.conf:ro
+      - ${PWD}/password.conf:/password.conf:ro
+      - ${PWD}/forbidden.conf:/forbidden.conf:ro
       - ./certs:/certs:ro
     ports:
       - "443:443"
       - "80:80"
-    command: ["sh", "/auto-reload-nginx.sh"]
+    command: ["nginx", "-c", "/nginx.conf", "-g", "daemon off;"]
+    tty: true
