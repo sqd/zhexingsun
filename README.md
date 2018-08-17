@@ -35,4 +35,9 @@ HTTPS握手在本地被劫持，`CONNECT`不会被真实地发送给代理服务
 `nginx.conf`中`if ngx.req.get_headers()["X-Proxy-Secret"] ~= "1234" then`更改`1234`为密码
 
 # 高级使用
-nginx的`/forbidden_path_no_accidental_name_collision`可随意转发给任意伪装app(比如wordpress)
+nginx.conf配置中以下两行
+```
+# do whatever you want here to pretend not be a proxy
+return 403;
+```
+可随意更改为转发给任意伪装app(比如wordpress)
