@@ -54,7 +54,7 @@ class ProxyRequestHandler(BaseHTTPRequestHandler):
 
     def log_error(self, format, *args):
         # surpress "Request timed out: timeout('timed out',)"
-        if isinstance(args[0], socket.timeout):
+        if len(args) and isinstance(args[0], socket.timeout):
             return
 
         self.log_message(format, *args)
@@ -113,10 +113,13 @@ class ProxyRequestHandler(BaseHTTPRequestHandler):
 
             res_body = res.read()
         except Exception as e:
+            self.log_error('Exception: %s', e)
+            if isinstance(e, ssl.SSLError):
+                self.log_error('If you\'re signing your own certificates, make sure you use --self-signed')
             self.send_error(502)
-            if conn.sock:
+            if conn.sock and not isinstance(e, ssl.SSLError):
                 conn.sock = conn.sock.unwrap()
-                conn.sock.close()
+            conn.sock.close()
             if isSSL:
                 self.connection = self.connection.unwrap()
             self.connection.close()
