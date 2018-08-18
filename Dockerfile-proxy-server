@@ -1,3 +1,0 @@
-FROM openresty/openresty:alpine
-COPY auto-reload-nginx.sh /auto-reload-nginx.sh
-RUN apk add inotify-tools

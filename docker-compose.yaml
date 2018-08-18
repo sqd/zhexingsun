@@ -1,9 +1,7 @@
 version: '3'
 services:
   proxy-server:
-    build:
-      context: .
-      dockerfile: Dockerfile-proxy-server
+    image: "openresty/openresty:alpine"
     volumes:
       - ${PWD}/nginx.conf:/nginx.conf:ro
       - ${PWD}/password.conf:/password.conf:ro
