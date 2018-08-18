@@ -24,6 +24,12 @@ def join_with_script_dir(path):
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), path)
 
 
+def close_socket(sock):
+    if isinstance(sock, ssl.SSLSocket):
+        sock = sock.unwrap()
+    sock.close()
+
+
 class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
     address_family = socket.AF_INET6
     daemon_threads = True
@@ -73,7 +79,13 @@ class ProxyRequestHandler(BaseHTTPRequestHandler):
         self.wfile.write("%s %d %s\r\n" % (self.protocol_version, 200, 'Connection Established'))
         self.end_headers()
 
-        self.connection = ssl.wrap_socket(self.connection, keyfile=self.certkey, certfile=certpath, server_side=True)
+        try:
+            self.connection = ssl.wrap_socket(self.connection, keyfile=self.certkey, certfile=certpath, server_side=True)
+        except ssl.SSLError as e:
+            self.log_error("Exception when intercepting connection: %s", e)
+            close_socket(self.connection)
+            return
+
         self.rfile = self.connection.makefile("rb", self.rbufsize)
         self.wfile = self.connection.makefile("wb", self.wbufsize)
 
@@ -117,12 +129,8 @@ class ProxyRequestHandler(BaseHTTPRequestHandler):
             if isinstance(e, ssl.SSLError):
                 self.log_error('If you\'re signing your own certificates, make sure you use --self-signed')
             self.send_error(502)
-            if conn.sock and not isinstance(e, ssl.SSLError):
-                conn.sock = conn.sock.unwrap()
-            conn.sock.close()
-            if isSSL:
-                self.connection = self.connection.unwrap()
-            self.connection.close()
+            close_socket(conn.sock)
+            close_socket(self.connection)
             return
 
         setattr(res, 'headers', self.filter_headers(res.headers))
@@ -133,13 +141,9 @@ class ProxyRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(res_body)
         self.wfile.flush()
-        if isSSL:
-            self.connection = self.connection.unwrap()
-        self.connection.close()
-        if conn.sock:
-            conn.sock = conn.sock.unwrap()
-            conn.sock.close()
 
+        close_socket(self.connection)
+        close_socket(conn.sock)
 
     do_HEAD = do_GET
     do_POST = do_GET
