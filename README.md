@@ -19,7 +19,7 @@ HTTPS握手在本地被劫持，`CONNECT`不会被真实地发送给代理服务
 
 1. `git clone https://github.com/sqd/zhexingsun.git && cd zhexingsun`
 2. `setup_local_proxy.sh`
-3. `(./local_proxy.py -s your-server.com -x yourpassword -p 8080 --self-signed &) && disown` (若使用受信任的证书，请忽略`--self-signed`)
+3. `./local_proxy.py -s your-server.com -x yourpassword -p 8080 --self-signed &` (若使用受信任的证书，请忽略`--self-signed`)
 4. 浏览器将HTTP和SSL/TSL代理**都**设置为`127.0.0.1:8080`
 5. 访问 [http://install_ca/](http://install_ca/) 添加本地根证书
 6. 科学上网
