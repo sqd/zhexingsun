@@ -183,7 +183,7 @@ class ProxyRequestHandler(BaseHTTPRequestHandler):
 def main():
     parser = ArgumentParser()
     parser.add_argument('-p', '--port', help='port the local HTTP proxy listens on', type=int, default=8080)
-    parser.add_argument('-d', '--host', help='host the local HTTP proxy listens on', default='localhost')
+    parser.add_argument('-d', '--host', help='host the local HTTP proxy listens on', default='')
     parser.add_argument('-s', '--server', required=True, help='address of the remote proxy server')
     parser.add_argument('-x', '--password', required=True, help='password')
     parser.add_argument('-k', '--self-signed', action='store_true', help='[DANGEROUS] ignore SSL certification '
